@@ -21,9 +21,11 @@ class Emailer {
   }
 
   init() {
-    this.client = mqtt.connect(constants.mqtt.URL);
+    let url = process.env.DOCKER_MOSQUITTO_PORT || constants.mqtt.URL;
+    console.log(process.env.DOCKER_MOSQUITTO_PORT);
+    this.client = mqtt.connect(url);
     this.client.on(constants.mqtt.CONNECT_TOPIC, () => {
-			this.outputText("Emailer connected to MQTT - " + constants.mqtt.URL);
+			this.outputText("Emailer connected to MQTT - " + url);
       this.client.subscribe(constants.mqtt.EMAIL_TOPIC, {qos: 2});
 		});  	
     this.client.on("message", (topic, payload) => {
@@ -43,7 +45,6 @@ class Emailer {
       }
     });
   }
-
 
   onSendEmail(payload) {
     // let json = JSON.parse('{"subject":"Time to go","text":"hi matt"}');
