@@ -23,7 +23,7 @@ class Emailer {
   init() {
     this.client = mqtt.connect(constants.mqtt.URL);
     this.client.on(constants.mqtt.CONNECT_TOPIC, () => {
-			this.outputText("Emailer connected to MQTT");
+			this.outputText("Emailer connected to MQTT - " + constants.mqtt.URL);
       this.client.subscribe(constants.mqtt.EMAIL_TOPIC, {qos: 2});
 		});  	
     this.client.on("message", (topic, payload) => {
@@ -60,7 +60,8 @@ class Emailer {
   }
 
   outputText(text) {
-    process.stdout.write(text + "\n");
+    // process.stdout.write(text + "\n");
+    console.log(text);
   }  
 
 }
